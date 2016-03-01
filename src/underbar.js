@@ -173,6 +173,23 @@
   //   }); // should be 5, regardless of the iterator function passed in
   //          No accumulator is given so the first element is used.
   _.reduce = function(collection, iterator, accumulator) {
+
+    if (typeof collection === 'object' && !Array.isArray(collection)) {
+      var copy = _.map(collection, function(item) {
+        return item;
+      });
+    }else{
+      var copy = collection.slice(0);
+    }
+
+    if(accumulator === undefined) {
+      accumulator = copy.shift();
+    }
+    _.each(copy, function(item) {
+      accumulator = iterator(accumulator, item);
+    });
+
+    return accumulator;
   };
 
   // Determine if the array or object contains a given value (using `===`).
